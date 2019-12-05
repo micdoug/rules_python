@@ -41,8 +41,7 @@ class WheelMetadata(pkg_resources.FileMetadata):
     metadata_path = '{}-{}.dist-info/METADATA'.format(distribution, version)
 
     with zipfile.ZipFile(self.path) as zf:
-      metadata = zf.read(metadata_path).decode('utf-8')
-    self._warn_on_replacement(metadata)
+      metadata = str(zf.read(metadata_path))
     return metadata
 
 
