@@ -41,7 +41,12 @@ class WheelMetadata(pkg_resources.FileMetadata):
     metadata_path = '{}-{}.dist-info/METADATA'.format(distribution, version)
 
     with zipfile.ZipFile(self.path) as zf:
-      metadata = str(zf.read(metadata_path))
+      # pkg_resources uses email.parser.Parser to parse METADATA, which doesn't support unicode
+      # In order to solve this we have to either reimplement pkg_resources' parsing to not use email.parser
+      # or strip Unicode characters. Since PEP 566 specifically references email.parser as the way to read
+      # METADATA, stripping Unicode characters seems like the better solution for now, especially since this
+      # shouldn't affect any information we care about for dependency resoltuion.
+      metadata = zf.read(metadata_path).decode('ascii', 'replace')
     return metadata
 
 
