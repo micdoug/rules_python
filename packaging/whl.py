@@ -46,7 +46,7 @@ class WheelMetadata(pkg_resources.FileMetadata):
       # or strip Unicode characters. Since PEP 566 specifically references email.parser as the way to read
       # METADATA, stripping Unicode characters seems like the better solution for now, especially since this
       # shouldn't affect any information we care about for dependency resoltuion.
-      metadata = zf.read(metadata_path).decode('ascii', 'replace')
+      metadata = zf.read(metadata_path).decode('ascii', 'ignore')
     return metadata
 
 
